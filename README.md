@@ -32,7 +32,7 @@ Examples:
     ---------------------------------------------------------------
 
 
-In order to install the plugin, simply run: `bin/plugin -install skroutz/elasticsearch-skroutz-greekstemmmer/0.0.1`.
+In order to install the plugin, simply run: `bin/plugin -install skroutz/elasticsearch-skroutz-greekstemmer/0.0.1`.
 
     ----------------------------------------------
     | SkroutzGreekStemmer Plugin | ElasticSearch |
