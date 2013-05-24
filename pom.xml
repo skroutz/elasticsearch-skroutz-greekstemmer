@@ -22,6 +22,19 @@
 		<elasticsearch.version>0.90.0</elasticsearch.version>
 	</properties>
 
+	<developers>
+		<developer>
+			<id>stathopa</id>
+			<name>Tasos Stathopoulos</name>
+			<email>stathopa@skroutz.gr</email>
+			<organization>Skroutz S.A.</organization>
+			<organizationUrl>http://www.skroutz.gr</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 	<scm>
 		<connection>scm:git:git@github.com:skoutz/elasticsearch-skroutz-greekstemmer.git</connection>
 		<developerConnection>scm:git:git@github.com:skroutz/elasticsearch-skroutz-greekstemmer.git
@@ -34,14 +47,6 @@
 		<groupId>org.sonatype.oss</groupId>
 		<version>7</version>
 	</parent>
-
-	<repositories>
-		<repository>
-			<id>oss.sonatype.org</id>
-			<name>OSS Sonatype</name>
-			<url>http://oss.sonatype.org/content/repositories/releases</url>
-		</repository>
-	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -139,6 +144,41 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
