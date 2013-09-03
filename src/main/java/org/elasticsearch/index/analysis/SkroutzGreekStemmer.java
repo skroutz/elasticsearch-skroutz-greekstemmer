@@ -224,7 +224,7 @@ public class SkroutzGreekStemmer {
    * <p>
    * <i>παρεα - παρεασ - παρεεσ, στερεα - στερεασ - στερεεσ</i>
    */
-  private static final CharArraySet exc4 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc4 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("θ", "δ", "ελ", "γαλ", "ν", "π", "ιδ", "παρ", "στερ"),
       false);
 
@@ -258,7 +258,7 @@ public class SkroutzGreekStemmer {
    * πατριος - πατρα, ποντος - ποντιος, σκορπω - σκορπιος, σπανιος - σπανος,
    * τιμή - τιμιος</i>
    */
-  private static final CharArraySet exc5 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc5 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("ηλ", "αγρ", "χωρ", "αγ", "φωτ", "νοτ", "μπρ", "τηλ",
           "δημ", "οπαλ", "πατρ", "ποντ", "σκορπ", "σπαν", "τιμ"),
           false);
@@ -289,7 +289,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc6 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc6 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("αλ", "αδ", "ενδ", "αμαν", "αμμοχαλ", "ηθ", "ανηθ",
           "αντιδ", "φυσ", "βρωμ", "γερ", "εξωδ", "καλπ", "καλλιν", "καταδ",
           "μουλ", "μπαν", "μπαγιατ", "μπολ", "μποσ", "νιτ", "ξικ", "συνομηλ",
@@ -314,7 +314,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc7 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc7 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("αναπ", "αποθ", "αποκ", "αποστ", "βουβ", "ξεθ", "ουλ",
           "πεθ", "πικρ", "ποτ", "σιχ", "χ"),
       false);
@@ -341,11 +341,11 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc8a = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc8a = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("τρ", "τσ"),
       false);
 
-  private static final CharArraySet exc8b = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc8b = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("βετερ", "βουλκ", "βραχμ", "γ", "δραδουμ", "θ", "καλπουζ",
           "καστελ", "κορμορ", "λαοπλ", "μωαμεθ", "μ", "μουσουλμ", "ν", "ουλ",
           "π", "πελεκ", "πλ", "πολισ", "πορτολ", "σαρακατσ", "σουλτ",
@@ -404,7 +404,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc9 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc9 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("αβαρ", "βεν", "εναρ", "αβρ", "αδ", "αθ", "αν", "απλ",
           "βαρον", "ντρ", "σκ", "κοπ", "μπορ", "νιφ", "παγ", "παρακαλ", "σερπ",
           "σκελ", "συρφ", "τοκ", "υ", "δ", "εμ", "θαρρ", "θ"),
@@ -492,11 +492,11 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc12a = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc12a = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("π", "απ", "συμπ", "ασυμπ", "ακαταπ", "αμεταμφ"),
       false);
 
-  private static final CharArraySet exc12b = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc12b = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("αλ", "αρ", "εκτελ", "ζ", "μ", "ξ", "παρακαλ", "αρ", "προ", "νισ"),
       false);
 
@@ -516,7 +516,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc13 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc13 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("διαθ", "θ", "παρακαταθ", "προσθ", "συνθ"),
       false);
 
@@ -550,7 +550,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc14 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc14 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("φαρμακ", "χαδ", "αγκ", "αναρρ", "βρομ", "εκλιπ", "λαμπιδ",
           "λεχ", "μ", "πατ", "ρ", "λ", "μεδ", "μεσαζ", "υποτειν", "αμ", "αιθ",
           "ανηκ", "δεσποζ", "ενδιαφερ", "δε", "δευτερευ", "καθαρευ", "πλε",
@@ -588,7 +588,7 @@ public class SkroutzGreekStemmer {
    return len;
   }
 
-  private static final CharArraySet exc15a = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc15a = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("αβαστ", "πολυφ", "αδηφ", "παμφ", "ρ", "ασπ", "αφ", "αμαλ",
           "αμαλλι", "ανυστ", "απερ", "ασπαρ", "αχαρ", "δερβεν", "δροσοπ",
           "ξεφ", "νεοπ", "νομοτ", "ολοπ", "ομοτ", "προστ", "προσωποπ", "συμπ",
@@ -597,7 +597,7 @@ public class SkroutzGreekStemmer {
           "ουλαμ", "ουρ", "π", "τρ", "μ"),
       false);
 
-  private static final CharArraySet exc15b = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc15b = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("ψοφ", "ναυλοχ"),
       false);
 
@@ -634,7 +634,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc16 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc16 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("ν", "χερσον", "δωδεκαν", "ερημον", "μεγαλον", "επταν"),
       false);
 
@@ -654,7 +654,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc17 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc17 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("ασβ", "σβ", "αχρ", "χρ", "απλ", "αειμν", "δυσχρ", "ευχρ", "κοινοχρ", "παλιμψ"),
       false);
 
@@ -668,7 +668,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc18 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc18 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("ν", "ρ", "σπι", "στραβομουτσ", "κακομουτσ", "εξων"),
       false);
 
@@ -692,7 +692,7 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc19 = new CharArraySet(Version.LUCENE_42,
+  private static final CharArraySet exc19 = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("παρασουσ", "φ", "χ", "ωριοπλ", "αζ", "αλλοσουσ", "ασουσ"),
       false);
 
