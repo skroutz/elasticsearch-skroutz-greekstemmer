@@ -230,7 +230,8 @@ public class SkroutzGreekStemmer {
    * <i>παρεα - παρεασ - παρεεσ, στερεα - στερεασ - στερεεσ</i>
    */
   private static final CharArraySet exc4 = new CharArraySet(Version.LUCENE_43,
-      Arrays.asList("θ", "δ", "ελ", "γαλ", "ν", "π", "ιδ", "παρ", "στερ"),
+      Arrays.asList("θ", "δ", "ελ", "γαλ", "ν", "π", "ιδ", "παρ", "στερ",
+          "ορφ", "ανδρ", "αντρ"),
       false);
 
   private int rule4(char s[], int len) {
