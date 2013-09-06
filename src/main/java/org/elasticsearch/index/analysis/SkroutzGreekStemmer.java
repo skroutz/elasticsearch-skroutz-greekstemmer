@@ -753,11 +753,32 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
+  private static final CharArraySet exc20 = new CharArraySet(Version.LUCENE_43,
+      Arrays.asList("γραμμ"), false);
+
   private int rule20(char s[], int len) {
-    if (len > 5 && (endsWith(s, len, "ματων") || endsWith(s, len, "ματοσ")))
+    boolean removed = false;
+    if (len > 6 && endsWith(s, len, "ματουσ")) {
+      len -= 5;
+      removed = true;
+    } else if (len > 5 && (endsWith(s, len, "ματων") ||
+        endsWith(s, len, "ματοσ") ||
+        endsWith(s, len, "ματωσ") ||
+        endsWith(s, len, "ματου") ||
+        endsWith(s, len, "ματοι"))) {
+      len -= 4;
+      removed = true;
+    } else if (len > 4 && endsWith(s, len, "ματα") ||
+        endsWith(s, len, "ματο")) {
       len -= 3;
-    else if (len > 4 && endsWith(s, len, "ματα"))
-      len -= 2;
+      removed = true;
+    }
+
+    if (removed && exc20.contains(s, 0, len)) {
+      // add -α
+      len += 1;
+      s[len - 1] = 'α';
+    }
     return len;
   }
 
