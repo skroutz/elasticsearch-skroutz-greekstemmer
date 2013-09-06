@@ -883,7 +883,15 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
+  private static final CharArraySet exc22a = new CharArraySet(Version.LUCENE_43,
+      Arrays.asList("εξ", "εσ", "κατ", "αν", "κ", "μ", "πρ"), false);
+
+  private static final CharArraySet exc22b = new CharArraySet(Version.LUCENE_43,
+      Arrays.asList("κα", "μ", "λε", "ελε", "δε"), false);
+
+
   private int rule22(char s[], int len) {
+    boolean removed = false;
     if (endsWith(s, len, "εστερ") ||
         endsWith(s, len, "εστατ"))
       return len - 5;
@@ -893,8 +901,21 @@ public class SkroutzGreekStemmer {
         endsWith(s, len, "υτερ") ||
         endsWith(s, len, "υτατ") ||
         endsWith(s, len, "ωτερ") ||
-        endsWith(s, len, "ωτατ"))
-      return len - 4;
+        endsWith(s, len, "ωτατ")) {
+      len -= 4;
+      removed = true;
+    }
+
+    if (removed) {
+      if (exc22a.contains(s, 0, len)) {
+        len += 4;
+      }else if (exc22b.contains(s, 0, len)) {
+        len += 2;
+        s[len - 2] = 'υ';
+        s[len - 1] = 'τ';
+      }
+      return len;
+    }
 
     return len;
   }
