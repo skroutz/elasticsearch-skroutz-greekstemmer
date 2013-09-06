@@ -265,8 +265,14 @@ public class SkroutzGreekStemmer {
    * τιμή - τιμιος</i>
    */
   private static final CharArraySet exc5 = new CharArraySet(Version.LUCENE_43,
-      Arrays.asList("ηλ", "αγρ", "χωρ", "αγ", "φωτ", "νοτ", "μπρ", "τηλ",
-          "δημ", "οπαλ", "πατρ", "ποντ", "σκορπ", "σπαν", "τιμ"),
+      Arrays.asList("αγ", "αγγελ", "αγρ", "αερ", "αθλ", "ακουσ", "αξ", "ασ",
+          "β", "βιβλ", "βυτ", "γ", "γιαγ", "γων", "δ", "δαν", "δηλ", "δημ",
+          "δοκιμ", "ελ", "ζαχαρ", "ηλ", "ηπ", "ιδ", "ισκ", "ιστ", "ιον",  "ιων",
+          "κιμωλ", "κολον", "κορ", "κτηρ", "κυρ", "λαγ", "λογ", "μαγ", "μπαν",
+          "μπρ", "ναυτ", "νοτ", "οπαλ", "οξ", "ορ", "οσ", "παναγ", "πατρ",
+          "πηλ", "πην", "πλαισ", "ποντ", "ραδ", "ροδ", "σκ", "σκορπ", "σουν",
+          "σπαν", "σταδ", "συρ", "τηλ", "τιμ", "τοκ", "τοπ", "τροχ", "χωρ",
+          "φιλ", "φωτ", "χ", "χιλ", "χρωμ"),
           false);
 
   private int rule5(char s[], int len) {
@@ -280,6 +286,7 @@ public class SkroutzGreekStemmer {
                            endsWith(s, len, "ιοσ") ||
                            endsWith(s, len, "ιου") ||
                            endsWith(s, len, "ιοι") ||
+                           endsWith(s, len, "ιον") ||
                            endsWith(s, len, "ιων"))) {
       len -= 3;
       removed = true;
@@ -289,8 +296,14 @@ public class SkroutzGreekStemmer {
     }
 
     if (removed) {                                    // like γιος -> γ
-      if (endsWithVowel(s, len) || exc5.contains(s, 0, len) || len < 2)
+      if (endsWithVowel(s, len) || exc5.contains(s, 0, len) || len < 2) {
         len++;  // add back -ι
+      } else if (endsWith(s, len, "παλ")) {
+        // add -αι emoved > 4 chars so its safe)
+        len += 2;
+        s[len - 2] = 'α';
+        s[len - 1] = 'ι';
+      }
     }
     return len;
   }
