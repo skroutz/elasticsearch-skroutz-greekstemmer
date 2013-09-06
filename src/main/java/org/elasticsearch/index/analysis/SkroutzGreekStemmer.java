@@ -309,25 +309,43 @@ public class SkroutzGreekStemmer {
   }
 
   private static final CharArraySet exc6 = new CharArraySet(Version.LUCENE_43,
-      Arrays.asList("αλ", "αδ", "ενδ", "αμαν", "αμμοχαλ", "ηθ", "ανηθ",
-          "αντιδ", "φυσ", "βρωμ", "γερ", "εξωδ", "καλπ", "καλλιν", "καταδ",
-          "μουλ", "μπαν", "μπαγιατ", "μπολ", "μποσ", "νιτ", "ξικ", "συνομηλ",
-          "πετσ", "πιτσ", "πικαντ", "πλιατσ", "ποστελν", "πρωτοδ", "σερτ",
-          "συναδ", "τσαμ", "υποδ", "φιλον", "φυλοδ", "χασ"),
-       false);
+      Arrays.asList("αδ", "αλ", "αμαν", "αμερ", "αμμοχαλ", "ανηθ", "αντιδ",
+          "απλ", "αττ", "αφρ", "βασ", "βρωμ","βρωμ", "γεν", "γερ", "δ", "δυτ",
+          "ειδ", "ενδ", "εξωδ", "ηθ", "θετ", "καλλιν", "καλπ", "καταδ", "κρ",
+          "κωδ", "λογ",  "μ", "μερ", "μοναδ", "μουλ", "μουσ",  "μπαγιατ",
+          "μπαν", "μπολ", "μποσ", "μυστ", "ν", "νιτ", "ξικ", "οπτ", "παν",
+          "πετσ", "πικαντ", "πιτσ", "πλαστ", "πλιατσ", "ποντ", "ποστελν",
+          "πρωτοδ", "σερτ", "σημαντ", "στατ", "συναδ", "συνομηλ", "τελ", "τεχν",
+          "τροπ", "τσαμ", "υποδ", "φ", "φιλον", "φυλοδ", "φυσ", "χασ"),
+          false);
 
   private int rule6(char s[], int len) {
     boolean removed = false;
-    if (len > 3 && (endsWith(s, len, "ικα") || endsWith(s, len, "ικο"))) {
+    if (len > 3 && (endsWith(s, len, "ικα") ||
+                    endsWith(s, len, "ικο") ||
+                    endsWith(s, len, "ικη"))) {
       len -= 3;
       removed = true;
-    } else if (len > 4 && (endsWith(s, len, "ικου") || endsWith(s, len, "ικων"))) {
+    } else if (len > 4 && (endsWith(s, len, "ικου") ||
+                           endsWith(s, len, "ικων") ||
+                           endsWith(s, len, "ικωσ") ||
+                           endsWith(s, len, "ικοσ") ||
+                           endsWith(s, len, "ικον") ||
+                           endsWith(s, len, "ικοι") ||
+                           endsWith(s, len, "ικησ") ||
+                           endsWith(s, len, "ικεσ"))) {
       len -= 4;
+      removed = true;
+    } else if (len > 5 && (endsWith(s, len, "ικουσ") ||
+                           endsWith(s, len, "ικεισ"))) {
+      len -= 5;
       removed = true;
     }
 
     if (removed) {
-      if (endsWithVowel(s, len) || exc6.contains(s, 0, len))
+      if (endsWithVowel(s, len)    ||
+          exc6.contains(s, 0, len) ||
+          endsWith(s, len, "φοιν"))
         len += 2; // add back -ικ
     }
     return len;
