@@ -672,7 +672,7 @@ public class SkroutzGreekStemmer {
   }
 
   private static final CharArraySet exc16 = new CharArraySet(Version.LUCENE_43,
-      Arrays.asList("ν", "χερσον", "δωδεκαν", "ερημον", "μεγαλον", "επταν"),
+      Arrays.asList("ν", "χερσον", "δωδεκαν", "ερημον", "μεγαλον", "επταν", "ι"),
       false);
 
   private int rule16(char s[], int len) {
