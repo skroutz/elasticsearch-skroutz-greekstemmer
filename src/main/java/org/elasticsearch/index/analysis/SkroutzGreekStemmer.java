@@ -59,6 +59,10 @@ public class SkroutzGreekStemmer {
   public final static String DEFAULT_STOPWORD_FILE = "stopwords.txt";
   private final CharArraySet stopwords;
 
+  public SkroutzGreekStemmer(final CharArraySet stopwords) {
+    this.stopwords = stopwords;
+  }
+
   public SkroutzGreekStemmer() {
     this.stopwords = SkroutzGreekStemmer.getDefaultStopSet();
   }
