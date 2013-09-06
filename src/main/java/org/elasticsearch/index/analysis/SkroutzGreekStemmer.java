@@ -1,8 +1,12 @@
 package org.elasticsearch.index.analysis;
 
 import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.analysis.util.WordlistLoader;
+import org.apache.lucene.util.IOUtils;
 import org.apache.lucene.util.Version;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.Arrays;
 
 /**
@@ -52,8 +56,36 @@ import java.util.Arrays;
  * about these suffixes are added.
  */
 public class SkroutzGreekStemmer {
+  public final static String DEFAULT_STOPWORD_FILE = "stopwords.txt";
+  private final CharArraySet stopwords;
+
+  public SkroutzGreekStemmer() {
+    this.stopwords = SkroutzGreekStemmer.getDefaultStopSet();
+  }
+
+  public static final CharArraySet getDefaultStopSet(){
+    return DefaultSetHolder.DEFAULT_SET;
+  }
+
+  private static class DefaultSetHolder {
+    private static final CharArraySet DEFAULT_SET;
+
+    static {
+      try {
+        DEFAULT_SET = loadStopwordSet(
+            SkroutzGreekStemmer.class.getResourceAsStream(DEFAULT_STOPWORD_FILE),
+            Version.LUCENE_43);
+      } catch (IOException ex) {
+        // default set should always be present as it is part of the
+        // distribution (JAR)
+        throw new RuntimeException("Unable to load default stopword set");
+      }
+    }
+  }
+
   public int stem(char s[], int len) {
-    if (len < 4) // too short
+    // Too short or a stopword
+    if (len < 3 || stopwords.contains(s, 0, len))
       return len;
 
     final int origLen = len;
@@ -961,6 +993,30 @@ public class SkroutzGreekStemmer {
         return true;
       default:
         return false;
+    }
+  }
+
+  /**
+   * Creates a CharArraySet from a file.
+   *
+   * @param stopwords
+   *          Input stream from the stopwords file
+   *
+   * @param matchVersion
+   *          the Lucene version for cross version compatibility
+   * @return a CharArraySet containing the distinct stopwords from the given
+   *         file
+   * @throws IOException
+   *           if loading the stopwords throws an {@link IOException}
+   */
+  private static CharArraySet loadStopwordSet(InputStream stopwords,
+      Version matchVersion) throws IOException {
+    Reader reader = null;
+    try {
+      reader = IOUtils.getDecodingReader(stopwords, IOUtils.CHARSET_UTF_8);
+      return WordlistLoader.getWordSet(reader, matchVersion);
+    } finally {
+      IOUtils.close(reader);
     }
   }
 }

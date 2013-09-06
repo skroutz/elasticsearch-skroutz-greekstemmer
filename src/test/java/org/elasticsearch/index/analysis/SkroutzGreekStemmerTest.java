@@ -25,6 +25,9 @@ public class SkroutzGreekStemmerTest {
       "αγ", "παπουτσ", "παπουτσ", "γραμματοκιβωτ", "γραμματοκιβωτ", "παρε",
       "παρε", "παρε", "στερε", "στερε", "στερε", "φασ", "φασ"};
 
+  private static final String[] stopwords = { "απο", "δυο", "ελα", "αμα",
+    "ειτε", "εγω", "δεν", "δηλαδη" };
+
   private char[] token;
   private String stem;
   private int tokenLength, stemLength;
@@ -38,6 +41,18 @@ public class SkroutzGreekStemmerTest {
       stem = new String(token, 0, stemLength);
 
       Assert.assertEquals(stem, stems[i]);
+    }
+  }
+
+  @Test
+  public void testSkroutzGreekStemmerStopwords() {
+    for(String stopword : stopwords) {
+      token = stopword.toCharArray();
+      tokenLength = stopword.length();
+      stemLength = stemmer.stem(token, tokenLength);
+      stem = new String(token, 0, stemLength);
+
+      Assert.assertEquals(stopword, stem);
     }
   }
 }
