@@ -860,6 +860,7 @@ public class SkroutzGreekStemmer {
         endsWith(s, len, "ηθω") ||
         endsWith(s, len, "ησω") ||
         endsWith(s, len, "ουν") ||
+        endsWith(s, len, "οισ") ||
         endsWith(s, len, "ουσ")))
       return len - 3;
 
