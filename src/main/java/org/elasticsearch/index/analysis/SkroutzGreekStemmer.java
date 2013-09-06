@@ -171,7 +171,12 @@ public class SkroutzGreekStemmer {
           endsWith(s, len, "νταντ") ||
           endsWith(s, len, "κυρ") ||
           endsWith(s, len, "θει") ||
-          endsWith(s, len, "πεθερ")))
+          endsWith(s, len, "πεθερ") ||
+          endsWith(s, len, "παρ") ||
+          endsWith(s, len, "ψαρ") ||
+          endsWith(s, len, "τζουρ") ||
+          endsWith(s, len, "ταμπουρ") ||
+          endsWith(s, len, "καπλαμ")))
         len += 2; // add back -αδ
     }
     return len;
