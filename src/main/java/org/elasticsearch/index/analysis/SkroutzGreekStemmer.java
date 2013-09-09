@@ -789,8 +789,12 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc20 = new CharArraySet(Version.LUCENE_43,
+  private static final CharArraySet exc20a = new CharArraySet(Version.LUCENE_43,
       Arrays.asList("γραμμ"), false);
+
+  private static final CharArraySet exc20b = new CharArraySet(Version.LUCENE_43,
+      Arrays.asList("γεμ", "σταμ"), false);
+
 
   private int rule20(char s[], int len) {
     boolean removed = false;
@@ -801,20 +805,27 @@ public class SkroutzGreekStemmer {
         endsWith(s, len, "ματοσ") ||
         endsWith(s, len, "ματωσ") ||
         endsWith(s, len, "ματου") ||
+        endsWith(s, len, "ματησ") ||
+        endsWith(s, len, "ματεσ") ||
         endsWith(s, len, "ματοι"))) {
       len -= 4;
       removed = true;
     } else if (len > 4 && endsWith(s, len, "ματα") ||
-        endsWith(s, len, "ματο")) {
+        endsWith(s, len, "ματο") ||
+        endsWith(s, len, "ματη")) {
       len -= 3;
       removed = true;
     }
 
-    if (removed && exc20.contains(s, 0, len)) {
+    if (removed)
+      if (exc20a.contains(s, 0, len)) {
       // add -α
       len += 1;
       s[len - 1] = 'α';
+    } else if (exc20b.contains(s, 0, len)) {
+      len += 2; // add -ατ
     }
+
     return len;
   }
 
