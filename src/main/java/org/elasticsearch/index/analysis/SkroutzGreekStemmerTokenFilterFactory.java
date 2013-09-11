@@ -26,7 +26,7 @@ public class SkroutzGreekStemmerTokenFilterFactory extends
 			Environment env, @Assisted String name,
 			@Assisted Settings settings) throws IOException {
 		super(index, indexSettings, name, settings);
-	  this.stopwords = parseStopWords(env, settings, "stopwords_path", Version.LUCENE_43);
+	  this.stopwords = parseStopWords(env, settings, "stopwords_path", Version.LUCENE_44);
 	}
 
 	@Override

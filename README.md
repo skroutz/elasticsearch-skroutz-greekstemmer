@@ -32,9 +32,9 @@ Examples:
     ---------------------------------------------------------------
 
 
-In order to install the 0.0.3 version of the plugin, simply run:
+In order to install the latest version of the plugin, simply run:
 
-    bin/plugin -install gr.skroutz/elasticsearch-skroutz-greekstemmer/0.0.3
+    bin/plugin -install gr.skroutz/elasticsearch-skroutz-greekstemmer/0.0.4
 
 
 In order to install versions prior to 0.0.2, simply run:
@@ -43,15 +43,17 @@ In order to install versions prior to 0.0.2, simply run:
 
 Versions:
 
-    ----------------------------------------------
-    | SkroutzGreekStemmer Plugin | ElasticSearch |
-    ----------------------------------------------
-    | 0.0.3                      | 0.90.2        |
-    ----------------------------------------------
-    | 0.0.2                      | 0.90.0        |
-    ----------------------------------------------
-    | 0.0.1                      | 0.19.4        |
-    ----------------------------------------------
+    -------------------------------------------------
+    | SkroutzGreekStemmer Plugin | ElasticSearch    |
+    -------------------------------------------------
+    | 0.0.4                      | 0.90.3 -> master |       |
+    -------------------------------------------------
+    | 0.0.3                      | 0.90.2           |
+    -------------------------------------------------
+    | 0.0.2                      | 0.90.0           |
+    -------------------------------------------------
+    | 0.0.1                      | 0.19.4           |
+    -------------------------------------------------
 
 
 
