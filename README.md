@@ -32,12 +32,12 @@ Examples:
     ---------------------------------------------------------------
 
 
-In order to install the 0.0.2 version of the plugin, simply run:
+In order to install the 0.0.3 version of the plugin, simply run:
 
-    bin/plugin -install gr.skroutz/elasticsearch-skroutz-greekstemmer/0.0.2
+    bin/plugin -install gr.skroutz/elasticsearch-skroutz-greekstemmer/0.0.3
 
 
-In order to install the previous version of the plugin, simply run:
+In order to install versions prior to 0.0.2, simply run:
 
     bin/plugin -install skroutz/elasticsearch-skroutz-greekstemmer/0.0.1
 
@@ -45,6 +45,8 @@ Versions:
 
     ----------------------------------------------
     | SkroutzGreekStemmer Plugin | ElasticSearch |
+    ----------------------------------------------
+    | 0.0.3                      | 0.90.2        |
     ----------------------------------------------
     | 0.0.2                      | 0.90.0        |
     ----------------------------------------------
