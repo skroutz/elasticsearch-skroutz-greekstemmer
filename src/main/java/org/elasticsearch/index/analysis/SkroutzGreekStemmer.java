@@ -440,20 +440,20 @@ public class SkroutzGreekStemmer {
     if (len > 8 && endsWith(s, len, "ιουντανε")) {
       len -= 8;
       removed = true;
-    } else if (len > 7 && endsWith(s, len, "ιοντανε") ||
+    } else if (len > 7 && (endsWith(s, len, "ιοντανε") ||
         endsWith(s, len, "ουντανε") ||
-        endsWith(s, len, "ηθηκανε")) {
+        endsWith(s, len, "ηθηκανε"))) {
       len -= 7;
       removed = true;
-    } else if (len > 6 && endsWith(s, len, "ιοτανε") ||
+    } else if (len > 6 && (endsWith(s, len, "ιοτανε") ||
         endsWith(s, len, "οντανε") ||
-        endsWith(s, len, "ουσανε")) {
+        endsWith(s, len, "ουσανε"))) {
       len -= 6;
       removed = true;
-    } else if (len > 5 && endsWith(s, len, "αγανε") ||
+    } else if (len > 5 && (endsWith(s, len, "αγανε") ||
         endsWith(s, len, "ησανε") ||
         endsWith(s, len, "οτανε") ||
-        endsWith(s, len, "ηκανε")) {
+        endsWith(s, len, "ηκανε"))) {
       len -= 5;
       removed = true;
     }
@@ -810,9 +810,9 @@ public class SkroutzGreekStemmer {
         endsWith(s, len, "ματοι"))) {
       len -= 4;
       removed = true;
-    } else if (len > 4 && endsWith(s, len, "ματα") ||
+    } else if (len > 4 && (endsWith(s, len, "ματα") ||
         endsWith(s, len, "ματο") ||
-        endsWith(s, len, "ματη")) {
+        endsWith(s, len, "ματη"))) {
       len -= 3;
       removed = true;
     }
