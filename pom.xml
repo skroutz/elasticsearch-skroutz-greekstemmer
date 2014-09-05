@@ -41,6 +41,13 @@
 		<url>http://github.com/skroutz/elasticsearch-skroutz-greekstemmer</url>
 	</scm>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<parent>
 		<artifactId>oss-parent</artifactId>
 		<groupId>org.sonatype.oss</groupId>
@@ -164,21 +171,33 @@
 			</plugin>
 
 			<plugin>
-			     <groupId>org.codehaus.mojo</groupId>
-			     <artifactId>exec-maven-plugin</artifactId>
-			     <version>1.2.1</version>
-			     <executions>
-			         <execution>
-			             <phase>test</phase>
-			             <goals>
-			                 <goal>java</goal>
-			             </goals>
-			             <configuration>
-			                 <mainClass>org.elasticsearch.index.analysis.UpdateStemmingSamples</mainClass>
-			                 <classpathScope>test</classpathScope>
-			             </configuration>
-			         </execution>
-			     </executions>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.2</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>org.elasticsearch.index.analysis.UpdateStemmingSamples</mainClass>
+							<classpathScope>test</classpathScope>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
