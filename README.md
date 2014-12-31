@@ -55,7 +55,74 @@ SkroutzGreekStemmer Plugin | ElasticSearch
 0.0.2                      | 0.90.0
 0.0.1                      | 0.19.4
 
-Example usage:
+Example usage
+-------------
+
+    # Create index
+    $ curl -XPUT 'http://localhost:9200/test_stemmer' -d '{
+      "settings":{
+        "analysis":{
+          "analyzer":{
+            "stem_analyzer":{
+              "type":"custom",
+                "tokenizer":"standard",
+                "filter": ["lower_greek", "stem_greek"]
+            }
+          },
+          "filter": {
+            "lower_greek": {
+              "type":"lowercase",
+              "language":"greek"
+            },
+            "stem_greek": {
+              "type":"skroutz_stem_greek"
+            }
+          }
+        }
+      }
+    }'
+    {"acknowledged":true}
+    
+    # Test analyzer
+    $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?analyzer=stem_analyzer&pretty=true' -d 'κουρευτικές μηχανές'
+    {
+      "tokens" : [ {
+        "token" : "κουρευτ",
+        "start_offset" : 0,
+        "end_offset" : 11,
+        "type" : "<ALPHANUM>",
+        "position" : 1
+      }, {
+        "token" : "μηχαν",
+        "start_offset" : 12,
+        "end_offset" : 19,
+        "type" : "<ALPHANUM>",
+        "position" : 2
+      } ]
+    }
+    
+    $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?analyzer=stem_analyzer&pretty=true' -d 'κουρευτική μηχανή'
+    {
+      "tokens" : [ {
+        "token" : "κουρευτ",
+        "start_offset" : 0,
+        "end_offset" : 10,
+        "type" : "<ALPHANUM>",
+        "position" : 1
+      }, {
+        "token" : "μηχαν",
+        "start_offset" : 11,
+        "end_offset" : 17,
+        "type" : "<ALPHANUM>",
+        "position" : 2
+      } ]
+    }
+    
+    # Delete test index
+    $ curl -XDELETE 'http://localhost:9200/test_stemmer'
+    {"ok":true,"acknowledged":true}
+
+### YML configuration example
 
 	index:
 	  analysis:
