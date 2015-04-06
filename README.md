@@ -82,7 +82,7 @@ Example usage
       }
     }'
     {"acknowledged":true}
-    
+
     # Test analyzer
     $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?analyzer=stem_analyzer&pretty=true' -d 'κουρευτικές μηχανές'
     {
@@ -100,7 +100,7 @@ Example usage
         "position" : 2
       } ]
     }
-    
+
     $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?analyzer=stem_analyzer&pretty=true' -d 'κουρευτική μηχανή'
     {
       "tokens" : [ {
@@ -117,7 +117,7 @@ Example usage
         "position" : 2
       } ]
     }
-    
+
     # Delete test index
     $ curl -XDELETE 'http://localhost:9200/test_stemmer'
     {"ok":true,"acknowledged":true}
@@ -143,3 +143,9 @@ References
 
 * [Development of a Stemmer for the Greek Language](http://people.dsv.su.se/~hercules/papers/Ntais_greek_stemmer_thesis_final.pdf)
 
+
+Issues
+--------
+
+For stemming issues: [here](https://github.com/skroutz/greek_stemmer)
+For plugin issues: [here](https://github.com/skroutz/elasticsearch-skroutz-greekstemmer)
