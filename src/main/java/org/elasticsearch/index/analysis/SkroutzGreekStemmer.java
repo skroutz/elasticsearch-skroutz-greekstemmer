@@ -150,8 +150,6 @@ public class SkroutzGreekStemmer {
 
     if (len > 6 && (endsWith(s, len, "σκαγιου"))
         || endsWith(s, len, "σκαγιων")
-        || endsWith(s, len, "ολογιου")
-        || endsWith(s, len, "ολογιων")
         || endsWith(s, len, "κρεατοσ")
         || endsWith(s, len, "κρεατων")
         || endsWith(s, len, "περατοσ")
@@ -173,7 +171,6 @@ public class SkroutzGreekStemmer {
       return len - 4;
 
     if (len > 5 && (endsWith(s, len, "σκαγια")
-        || endsWith(s, len, "ολογια")
         || endsWith(s, len, "κρεατα")
         || endsWith(s, len, "περατα")
         || endsWith(s, len, "τερατα")))
