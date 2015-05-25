@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.util.Version;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
+import org.elasticsearch.common.lucene.Lucene;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.FailedToResolveConfigException;
@@ -26,7 +27,7 @@ public class SkroutzGreekStemmerTokenFilterFactory extends
 			Environment env, @Assisted String name,
 			@Assisted Settings settings) throws IOException {
 		super(index, indexSettings, name, settings);
-	  this.stopwords = parseStopWords(env, settings, "stopwords_path", Version.LUCENE_44);
+	  this.stopwords = parseStopWords(env, settings, "stopwords_path", Lucene.VERSION);
 	}
 
 	@Override

@@ -149,4 +149,3 @@ Issues
 --------
 
 For stemming issues: [here](https://github.com/skroutz/greek_stemmer)
-For plugin issues: [here](https://github.com/skroutz/elasticsearch-skroutz-greekstemmer)
