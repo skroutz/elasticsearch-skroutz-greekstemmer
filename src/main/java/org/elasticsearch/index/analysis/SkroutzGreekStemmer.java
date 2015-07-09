@@ -103,7 +103,8 @@ public class SkroutzGreekStemmer {
     len = rule2(s, len);
     len = rule3(s, len);
     len = rule4(s, len);
-    len = rule5(s, len);
+    len = rule5a(s, len);
+    len = rule5b(s, len);
     len = rule6(s, len);
     len = rule7(s, len);
     len = rule8(s, len);
@@ -313,7 +314,25 @@ public class SkroutzGreekStemmer {
           "φιλ", "φωτ", "χ", "χιλ", "χρωμ"),
           false);
 
-  private int rule5(char s[], int len) {
+  private int rule5a(char s[], int len) {
+    if (len > 7 && (endsWith(s, len, "ειο") ||
+                    endsWith(s, len, "εια"))) {
+      len -= 3;
+    } else if (len > 8 && (endsWith(s, len, "ειοσ") ||
+                           endsWith(s, len, "ειοι") ||
+                           endsWith(s, len, "ειασ") ||
+                           endsWith(s, len, "ειεσ") ||
+                           endsWith(s, len, "ειου") ||
+                           endsWith(s, len, "ειων"))) {
+      len -= 4;
+    } else if (len > 9 && (endsWith(s, len, "ειουσ"))) {
+      len -= 5;
+    }
+
+    return len;
+  }
+
+  private int rule5b(char s[], int len) {
     boolean removed = false;
     if (len > 2 && (endsWith(s, len, "ιο") ||
                     endsWith(s, len, "ια"))) {
