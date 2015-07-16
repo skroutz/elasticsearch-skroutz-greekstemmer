@@ -49,6 +49,7 @@ Versions:
 
 SkroutzGreekStemmer Plugin | ElasticSearch
 ---------------------------|------------------
+0.0.7                      | 1.5.x
 0.0.6                      | 1.5.x
 0.0.5                      | 0.90.3
 0.0.4                      | 0.90.3
