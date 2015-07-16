@@ -38,7 +38,7 @@ Word                 | GreekStemmer   | SkroutzGreekStemmer
 
 In order to install the latest version of the plugin, simply run:
 
-    bin/plugin -install gr.skroutz/elasticsearch-skroutz-greekstemmer/0.0.6
+    bin/plugin -install gr.skroutz/elasticsearch-skroutz-greekstemmer/0.0.7
 
 
 In order to install versions prior to 0.0.2, simply run:
