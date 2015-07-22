@@ -13,7 +13,8 @@ import org.apache.lucene.analysis.util.CharArraySet;
  * <p>
  * NOTE: Input is expected to be casefolded for Greek (including folding of final
  * sigma to sigma), and with diacritics removed. This can be achieved by using
- * either {@link GreekLowerCaseFilter} or ICUFoldingFilter before GreekStemFilter.
+ * either {@link org.apache.lucene.analysis.el.GreekLowerCaseFilter} or
+ *  ICUFoldingFilter before GreekStemFilter.
  *
  * Exported from @lucene.experiment and modified in order to use the Skroutz
  * Greek stemmer.
