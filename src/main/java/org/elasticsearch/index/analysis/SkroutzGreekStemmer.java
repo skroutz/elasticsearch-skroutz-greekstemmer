@@ -120,11 +120,12 @@ public class SkroutzGreekStemmer {
     len = rule18(s, len);
     len = rule19(s, len);
     len = rule20(s, len);
+    len = rule21(s, len);
     // "long list"
     if (len == origLen)
-      len = rule21(s, len);
+      len = rule22(s, len);
 
-    return rule22(s, len);
+    return rule23(s, len);
   }
 
   private int rule0(char s[], int len) {
@@ -192,6 +193,9 @@ public class SkroutzGreekStemmer {
       return len - 2;
 
     if (len > 2 && endsWith(s, len, "φωσ"))
+      return len - 1;
+
+    if (len > 2 && endsWith(s, len, "ευα"))
       return len - 1;
 
     return len;
@@ -851,6 +855,13 @@ public class SkroutzGreekStemmer {
   }
 
   private int rule21(char s[], int len) {
+    if (len > 3 && endsWith(s, len, "ουα"))
+      return len - 1;
+
+    return len;
+  }
+
+  private int rule22(char s[], int len) {
     if (len > 9 && endsWith(s, len, "ιοντουσαν"))
       return len - 9;
 
@@ -941,6 +952,7 @@ public class SkroutzGreekStemmer {
         endsWith(s, len, "οι") ||
         endsWith(s, len, "οσ") ||
         endsWith(s, len, "ου") ||
+        endsWith(s, len, "υα") ||
         endsWith(s, len, "υσ") ||
         endsWith(s, len, "ων")))
       return len - 2;
@@ -951,14 +963,14 @@ public class SkroutzGreekStemmer {
     return len;
   }
 
-  private static final CharArraySet exc22a = new CharArraySet(Lucene.VERSION,
+  private static final CharArraySet exc23a = new CharArraySet(Lucene.VERSION,
       Arrays.asList("εξ", "εσ", "κατ", "αν", "κ", "μ", "πρ"), false);
 
-  private static final CharArraySet exc22b = new CharArraySet(Lucene.VERSION,
+  private static final CharArraySet exc23b = new CharArraySet(Lucene.VERSION,
       Arrays.asList("κα", "μ", "λε", "ελε", "δε"), false);
 
 
-  private int rule22(char s[], int len) {
+  private int rule23(char s[], int len) {
     boolean removed = false;
     if (endsWith(s, len, "εστερ") ||
         endsWith(s, len, "εστατ"))
@@ -975,9 +987,9 @@ public class SkroutzGreekStemmer {
     }
 
     if (removed) {
-      if (exc22a.contains(s, 0, len)) {
+      if (exc23a.contains(s, 0, len)) {
         len += 4;
-      }else if (exc22b.contains(s, 0, len)) {
+      }else if (exc23b.contains(s, 0, len)) {
         len += 2;
         s[len - 2] = 'υ';
         s[len - 1] = 'τ';
