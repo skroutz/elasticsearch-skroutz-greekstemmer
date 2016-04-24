@@ -1,10 +1,10 @@
 package org.elasticsearch.plugin.analysis.skroutzgreekstemmer;
 
-import org.elasticsearch.plugins.AbstractPlugin;
+import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.index.analysis.AnalysisModule;
 import org.elasticsearch.index.analysis.SkroutzGreekStemmerBinderProcessor;
 
-public class SkroutzGreekStemmerPlugin extends AbstractPlugin {
+public class SkroutzGreekStemmerPlugin extends Plugin {
 
 	@Override
 	public String description() {
