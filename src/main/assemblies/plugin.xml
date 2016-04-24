@@ -16,4 +16,14 @@
             </excludes>
         </dependencySet>
     </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>${basedir}/src/main/resources/</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>*.properties</include>
+            </includes>
+            <filtered>true</filtered>
+        </fileSet>
+    </fileSets>
 </assembly>
