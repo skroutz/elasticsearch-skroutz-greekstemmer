@@ -13,10 +13,9 @@ import org.elasticsearch.env.EnvironmentModule;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.IndexNameModule;
 import org.elasticsearch.index.settings.IndexSettingsModule;
-import org.elasticsearch.indices.analysis.IndicesAnalysisModule;
 import org.elasticsearch.indices.analysis.IndicesAnalysisService;
 
-import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import static org.elasticsearch.common.settings.Settings.settingsBuilder;
 import static org.hamcrest.Matchers.instanceOf;
 
 public class SimpleSkroutzGreekStemmerAnalysisTest {
@@ -26,12 +25,14 @@ public class SimpleSkroutzGreekStemmerAnalysisTest {
       Index index = new Index("test");
 
       Settings indexSettings = settingsBuilder()
-          .put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT).build();
+          .put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT)
+          .put("path.home", "/")
+          .build();
 
       Injector parentInjector = new ModulesBuilder()
           .add(new SettingsModule(indexSettings),
-               new EnvironmentModule(new Environment(indexSettings)),
-               new IndicesAnalysisModule()).createInjector();
+               new EnvironmentModule(new Environment(indexSettings)))
+	  .createInjector();
 
       Injector injector = new ModulesBuilder()
           .add(new IndexSettingsModule(index, indexSettings),
