@@ -341,6 +341,11 @@ public class SkroutzGreekStemmer {
     if (len > 2 && (endsWith(s, len, "ιο") ||
                     endsWith(s, len, "ια"))) {
       len -= 2;
+      if(endsWith(s, len, "ρολογ") ||
+         endsWith(s, len, "κατωγ")) {
+        s[len-1] = 'ι'; // ρολοι, κατωι
+        return len;
+      }
       removed = true;
     } else if (len > 3 && (endsWith(s, len, "ιασ") ||
                            endsWith(s, len, "ιεσ") ||
