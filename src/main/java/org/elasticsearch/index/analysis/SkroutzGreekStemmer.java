@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
-import org.apache.lucene.analysis.util.CharArrayMap;
-import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.analysis.CharArrayMap;
+import org.apache.lucene.analysis.CharArraySet;
 
-import org.elasticsearch.common.logging.Loggers;
-import org.elasticsearch.common.logging.ESLogger;
+import org.apache.logging.log4j.Logger;
+import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import org.apache.lucene.analysis.util.WordlistLoader;
@@ -68,7 +68,8 @@ public class SkroutzGreekStemmer {
   private CharArraySet protectedWords = CharArraySet.EMPTY_SET;
   private CharArrayMap<char[]> stepZeroExceptions = CharArrayMap.emptyMap();
 
-  protected final ESLogger logger = Loggers.getLogger("SkroutzGreekStemmer");
+  protected final Logger logger = ESLoggerFactory.getLogger
+          (SkroutzGreekStemmer.class.getName());
 
   public SkroutzGreekStemmer() {
     try {
