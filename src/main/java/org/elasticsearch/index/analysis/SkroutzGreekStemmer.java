@@ -1,10 +1,16 @@
 package org.elasticsearch.index.analysis;
 
+import com.esotericsoftware.yamlbeans.YamlException;
+import com.esotericsoftware.yamlbeans.YamlReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
 import org.apache.lucene.analysis.util.CharArraySet;
@@ -62,16 +68,25 @@ import org.elasticsearch.common.lucene.Lucene;
 public class SkroutzGreekStemmer {
   public final static String DEFAULT_STOPWORD_FILE = "stopwords.txt";
   private final CharArraySet stopwords;
+  private Map<String, char[]> stepZeroExceptions;
 
   public SkroutzGreekStemmer(final CharArraySet stopwords) {
     this.stopwords = stopwords;
+    this.stepZeroExceptions = new HashMap(0);
   }
 
   public SkroutzGreekStemmer() {
     this.stopwords = SkroutzGreekStemmer.getDefaultStopSet();
+    try {
+      this.stepZeroExceptions = loadExceptions("step_0_exceptions");
+    } catch(Exception ex) {
+      System.err.println("Failed to load exceptions from yaml file");
+      ex.printStackTrace();
+      this.stepZeroExceptions =  new HashMap(0);
+    }
   }
 
-  public static final CharArraySet getDefaultStopSet(){
+  public static final CharArraySet getDefaultStopSet() {
     return DefaultSetHolder.DEFAULT_SET;
   }
 
@@ -95,6 +110,14 @@ public class SkroutzGreekStemmer {
     // Too short or a stopword
     if (len < 3 || stopwords.contains(s, 0, len))
       return len;
+
+    // a String representation of the term's char[]
+    String termStr = String.valueOf(s);
+
+    //handle step 0 and step 1 exceptions
+    char[] exceptional = stepZeroExceptions.get(termStr);
+
+    if(exceptional != null) return handleException(s, exceptional);
 
     final int origLen = len;
     // "short rules": if it hits one of these, it skips the "long list"
@@ -126,6 +149,20 @@ public class SkroutzGreekStemmer {
       len = rule22(s, len);
 
     return rule23(s, len);
+  }
+
+  /**
+   * Re-writes the char array based on an exception.
+   * @param s the terms char array
+   * @param stemException the exceptions char array (must be smaller in length)
+   * @return 
+   */
+  private int handleException(char[] s, char[] stemException) {
+    int len = stemException.length;
+
+    System.arraycopy(s, 0, stemException,0, len);
+
+    return len;
   }
 
   private int rule0(char s[], int len) {
@@ -1066,5 +1103,31 @@ public class SkroutzGreekStemmer {
     } finally {
       IOUtils.close(reader);
     }
+  }
+
+  /**
+   * Helper function loading an exception Map by its name from the config file.
+   * @param exName The exceptions name
+   * @return a Map of "term" -> ['s','t','e','m','m','e','d']
+   * @throws FileNotFoundException
+   * @throws YamlException 
+   */
+  private static Map<String, char[]> loadExceptions(String exName)
+          throws FileNotFoundException, YamlException {
+    String fname = SkroutzGreekStemmer.class.getClassLoader()
+            .getResource("stemmer.yml").getFile();
+    YamlReader reader = new YamlReader(new FileReader(fname));
+
+    Map<String, String> stemException =
+            (Map<String, String>) ((Map) reader.read()).get(exName);
+
+    Map<String, char[]> rv = new HashMap<String, char[]>();
+
+    for (Map.Entry<String, String> entry : stemException.entrySet()){
+      rv.put(entry.getKey().toLowerCase(),
+              entry.getValue().toLowerCase().toCharArray());
+    }
+
+    return rv;
   }
 }

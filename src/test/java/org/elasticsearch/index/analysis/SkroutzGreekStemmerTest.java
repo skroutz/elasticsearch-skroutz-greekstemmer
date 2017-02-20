@@ -3,6 +3,9 @@ package org.elasticsearch.index.analysis;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+
 public class SkroutzGreekStemmerTest {
   private final SkroutzGreekStemmer stemmer = new SkroutzGreekStemmer();
 
@@ -14,7 +17,8 @@ public class SkroutzGreekStemmerTest {
       "αγροσ", "γιοσ", "γαλαζιοι", "γαλαζια", "κουρεασ", "κουρεα", "αμυνοξυ",
       "αμυνοξεα", "αμυνοξεων", "αγιασ", "αγων", "παπουτσια", "παπουτσι",
       "γραμματοκιβωτιο", "γραμματοκιβωτια", "παρεα", "παρεο", "παρεεσ",
-      "στερεεσ", "στερεοσ", "στερεα", "φαση", "φασεωσ", "γραμματα", "διχτυα"};
+      "στερεεσ", "στερεοσ", "στερεα", "φαση", "φασεωσ", "γραμματα", "διχτυα", 
+      "ρολοι", "ρολογια"};
 
   /**
    * the stems that should be returned by the stemmer for the above words.
@@ -23,7 +27,8 @@ public class SkroutzGreekStemmerTest {
       "βιντεοπροβολ", "βιντεοπροβολ", "αγρι", "αγρι", "αγρι", "αγρ", "γι",
       "γαλαζ", "γαλαζ", "κουρ", "κουρ", "αμυνοξ", "αμυνοξ", "αμυνοξ", "αγι",
       "αγ", "παπουτσ", "παπουτσ", "γραμματοκιβωτ", "γραμματοκιβωτ", "παρε",
-      "παρε", "παρε", "στερε", "στερε", "στερε", "φασ", "φασ", "γραμμα", "διχτ"};
+      "παρε", "παρε", "στερε", "στερε", "στερε", "φασ", "φασ", "γραμμα", "διχτ",
+      "ρολ", "ρολ"};
 
   private static final String[] stopwords = { "απο", "δυο", "ελα", "αμα",
     "ειτε", "εγω", "δεν", "δηλαδη" };
@@ -42,6 +47,21 @@ public class SkroutzGreekStemmerTest {
 
       Assert.assertEquals(stem, stems[i]);
     }
+  }
+
+  @Test
+  public void testSkroutzGreekStemmerExceptionsZero()
+          throws NoSuchFieldException, IllegalAccessException {
+
+    Field field = stemmer.getClass().getDeclaredField("stepZeroExceptions");
+    field.setAccessible(true);
+
+    Map<String, char[]> stepZeroExceptions = (Map) field.get(stemmer);
+
+   for (Map.Entry<String, char[]> entry : stepZeroExceptions.entrySet()) {
+     Assert.assertTrue(entry.getKey().length() >= entry.getValue().length,
+             "Make sure that the stem is shorter/equal than the original.");
+   }
   }
 
   @Test
