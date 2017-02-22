@@ -226,7 +226,7 @@ public class SkroutzGreekStemmer {
         || endsWith(s, len, "τερασ")))
       return len - 2;
 
-    if (len > 3 && endsWith(s, len, "φωτα"))
+    if (len > 3 && (endsWith(s, len, "φωτα") || endsWith(s, len, "φωτο")))
       return len - 2;
 
     if (len > 2 && endsWith(s, len, "φωσ"))
