@@ -70,11 +70,6 @@ public class SkroutzGreekStemmer {
 
   public SkroutzGreekStemmer(final CharArraySet stopwords) {
     this.stopwords = stopwords;
-    this.stepZeroExceptions = new HashMap(0);
-  }
-
-  public SkroutzGreekStemmer() {
-    this.stopwords = SkroutzGreekStemmer.getDefaultStopSet();
     try {
       this.stepZeroExceptions = loadExceptions("step_0_exceptions");
     } catch(Exception ex) {
@@ -82,6 +77,10 @@ public class SkroutzGreekStemmer {
       ex.printStackTrace();
       this.stepZeroExceptions =  new HashMap(0);
     }
+  }
+
+  public SkroutzGreekStemmer() {
+    this(SkroutzGreekStemmer.getDefaultStopSet());
   }
 
   public static final CharArraySet getDefaultStopSet() {
