@@ -1,9 +1,6 @@
 package org.elasticsearch.index.analysis;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -18,6 +15,7 @@ import org.apache.lucene.analysis.util.WordlistLoader;
 import org.apache.lucene.util.IOUtils;
 import org.apache.lucene.util.Version;
 import org.elasticsearch.common.lucene.Lucene;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -1110,24 +1108,21 @@ public class SkroutzGreekStemmer {
    * @param exName The exceptions name
    * @return a Map of "term" -> ['s','t','e','m','m','e','d']
    * @throws FileNotFoundException
-   * @throws YamlException 
    */
   private static Map<String, char[]> loadExceptions(String exName)
-          throws FileNotFoundException, YamlException {
-    String fname = SkroutzGreekStemmer.class.getClassLoader()
-            .getResource("stemmer.yml").getFile();
-    YamlReader reader = new YamlReader(new FileReader(fname));
+          throws FileNotFoundException {
+    InputStream in = SkroutzGreekStemmer.class.getClassLoader()
+            .getResourceAsStream("stemmer.yml");
+    Yaml reader = new Yaml();
 
-    Map<String, String> stemException =
-            (Map<String, String>) ((Map) reader.read()).get(exName);
-
+    Map<String, Map<String, String>> composite = (Map) reader.load(in);
+    Map<String, String> stemException = composite.get(exName);
     Map<String, char[]> rv = new HashMap<String, char[]>();
 
     for (Map.Entry<String, String> entry : stemException.entrySet()){
       rv.put(entry.getKey().toLowerCase(),
               entry.getValue().toLowerCase().toCharArray());
     }
-
     return rv;
   }
 }
