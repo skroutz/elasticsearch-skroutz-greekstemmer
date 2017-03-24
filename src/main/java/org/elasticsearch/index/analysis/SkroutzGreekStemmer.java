@@ -110,7 +110,7 @@ public class SkroutzGreekStemmer {
       return len;
 
     // a String representation of the term's char[]
-    String termStr = String.valueOf(s);
+    String termStr = String.valueOf(s, 0, len);
 
     //handle step 0 and step 1 exceptions
     char[] exceptional = stepZeroExceptions.get(termStr);
