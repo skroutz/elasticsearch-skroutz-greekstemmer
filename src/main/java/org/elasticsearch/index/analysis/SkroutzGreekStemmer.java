@@ -1,19 +1,18 @@
 package org.elasticsearch.index.analysis;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
+
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
+import org.apache.lucene.analysis.util.CharArrayMap;
 import org.apache.lucene.analysis.util.CharArraySet;
-import org.apache.lucene.analysis.util.WordlistLoader;
-import org.apache.lucene.util.IOUtils;
-import org.apache.lucene.util.Version;
+import org.elasticsearch.common.logging.Loggers;
+import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.lucene.Lucene;
 import org.yaml.snakeyaml.Yaml;
 
@@ -64,55 +63,27 @@ import org.yaml.snakeyaml.Yaml;
  * about these suffixes are added.
  */
 public class SkroutzGreekStemmer {
-  public final static String DEFAULT_STOPWORD_FILE = "stopwords.txt";
-  private final CharArraySet stopwords;
-  private Map<String, char[]> stepZeroExceptions;
+  private CharArraySet protectedWords = CharArraySet.EMPTY_SET;
+  private CharArrayMap<char[]> stepZeroExceptions = CharArrayMap.emptyMap();
 
-  public SkroutzGreekStemmer(final CharArraySet stopwords) {
-    this.stopwords = stopwords;
-    try {
-      this.stepZeroExceptions = loadExceptions("step_0_exceptions");
-    } catch(Exception ex) {
-      System.err.println("Failed to load exceptions from yaml file");
-      ex.printStackTrace();
-      this.stepZeroExceptions =  new HashMap(0);
-    }
-  }
+  protected final ESLogger logger = Loggers.getLogger("SkroutzGreekStemmer");
 
   public SkroutzGreekStemmer() {
-    this(SkroutzGreekStemmer.getDefaultStopSet());
-  }
-
-  public static final CharArraySet getDefaultStopSet() {
-    return DefaultSetHolder.DEFAULT_SET;
-  }
-
-  private static class DefaultSetHolder {
-    private static final CharArraySet DEFAULT_SET;
-
-    static {
-      try {
-        DEFAULT_SET = loadStopwordSet(
-            SkroutzGreekStemmer.class.getResourceAsStream(DEFAULT_STOPWORD_FILE),
-            Lucene.VERSION);
-      } catch (IOException ex) {
-        // default set should always be present as it is part of the
-        // distribution (JAR)
-        throw new RuntimeException("Unable to load default stopword set");
-      }
+    try {
+      this.protectedWords = loadProtected("protected_words");
+      this.stepZeroExceptions = loadExceptions("step_0_exceptions");
+    } catch(IOException ex) {
+        logger.warn("Failed to load exceptions from yaml file");
     }
   }
 
   public int stem(char s[], int len) {
-    // Too short or a stopword
-    if (len < 3 || stopwords.contains(s, 0, len))
+    // Too short or a protected word
+    if ((len < 3) || (protectedWords.contains(s, 0, len)))
       return len;
 
-    // a String representation of the term's char[]
-    String termStr = String.valueOf(s, 0, len);
-
     //handle step 0 and step 1 exceptions
-    char[] exceptional = stepZeroExceptions.get(termStr);
+    char[] exceptional = stepZeroExceptions.get(s, 0, len);
 
     if(exceptional != null) return handleException(s, exceptional);
 
@@ -150,6 +121,7 @@ public class SkroutzGreekStemmer {
 
   /**
    * Re-writes the char array based on an exception.
+   * Used in case a stem is not a substring of the original string.
    * @param s the terms char array
    * @param stemException the exceptions char array (must be smaller in length)
    * @return 
@@ -1079,49 +1051,42 @@ public class SkroutzGreekStemmer {
   }
 
   /**
-   * Creates a CharArraySet from a file.
-   *
-   * @param stopwords
-   *          Input stream from the stopwords file
-   *
-   * @param matchVersion
-   *          the Lucene version for cross version compatibility
-   * @return a CharArraySet containing the distinct stopwords from the given
-   *         file
-   * @throws IOException
-   *           if loading the stopwords throws an {@link IOException}
-   */
-  private static CharArraySet loadStopwordSet(InputStream stopwords,
-      Version matchVersion) throws IOException {
-    Reader reader = null;
-    try {
-      reader = IOUtils.getDecodingReader(stopwords, IOUtils.CHARSET_UTF_8);
-      return WordlistLoader.getWordSet(reader, matchVersion);
-    } finally {
-      IOUtils.close(reader);
-    }
-  }
-
-  /**
    * Helper function loading an exception Map by its name from the config file.
    * @param exName The exceptions name
-   * @return a Map of "term" -> ['s','t','e','m','m','e','d']
-   * @throws FileNotFoundException
+   * @return a CharArrayMap which maps terms to their exceptions
+   * @throws IOException
    */
-  private static Map<String, char[]> loadExceptions(String exName)
-          throws FileNotFoundException {
+  private CharArrayMap<char[]> loadExceptions(String exName)
+          throws IOException {
     InputStream in = SkroutzGreekStemmer.class.getClassLoader()
             .getResourceAsStream("stemmer.yml");
     Yaml reader = new Yaml();
 
     Map<String, Map<String, String>> composite = (Map) reader.load(in);
-    Map<String, String> stemException = composite.get(exName);
-    Map<String, char[]> rv = new HashMap<String, char[]>();
+    CharArrayMap<char[]> stemException = new CharArrayMap(1, true);
 
-    for (Map.Entry<String, String> entry : stemException.entrySet()){
-      rv.put(entry.getKey().toLowerCase(),
+    for (Map.Entry<String, String> entry : composite.get(exName).entrySet()){
+        stemException.put(entry.getKey().toLowerCase().toCharArray(),
               entry.getValue().toLowerCase().toCharArray());
     }
-    return rv;
+    return stemException;
+  }
+
+  /**
+   * TODO Consider if it's overall better to sacrifice modularity for
+   * efficiency: merge this with loadExceptions
+   * Helper function loading a list of protected words by its name from
+   * the config file.
+   * @param prName The protected words file name
+   * @return a CharArraySet of "term" -> ['s','t','e','m','m','e','d']
+   * @throws IOException
+   */
+  private CharArraySet loadProtected(String prName)
+          throws IOException {
+    InputStream in = SkroutzGreekStemmer.class.getClassLoader()
+            .getResourceAsStream("stemmer.yml");
+    Yaml reader = new Yaml();
+    Map<String, List<char[]>> composite = (Map) reader.load(in);
+    return new CharArraySet(composite.get(prName), true);
   }
 }

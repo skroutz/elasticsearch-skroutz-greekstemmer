@@ -1,10 +1,10 @@
 package org.elasticsearch.index.analysis;
 
+import org.apache.lucene.analysis.util.CharArrayMap;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
 public class SkroutzGreekStemmerTest {
   private final SkroutzGreekStemmer stemmer = new SkroutzGreekStemmer();
@@ -17,7 +17,7 @@ public class SkroutzGreekStemmerTest {
       "αγροσ", "γιοσ", "γαλαζιοι", "γαλαζια", "κουρεασ", "κουρεα", "αμυνοξυ",
       "αμυνοξεα", "αμυνοξεων", "αγιασ", "αγων", "παπουτσια", "παπουτσι",
       "γραμματοκιβωτιο", "γραμματοκιβωτια", "παρεα", "παρεο", "παρεεσ",
-      "στερεεσ", "στερεοσ", "στερεα", "φαση", "φασεωσ", "γραμματα", "διχτυα", 
+      "στερεεσ", "στερεοσ", "στερεα", "φαση", "φασεωσ", "γραμματα", "διχτυα",
       "μονοφωτα", "μονοφωτο","ρολοι", "ρολογια"};
 
   /**
@@ -30,7 +30,7 @@ public class SkroutzGreekStemmerTest {
       "παρε", "παρε", "στερε", "στερε", "στερε", "φασ", "φασ", "γραμμα", "διχτ",
       "μονοφω", "μονοφω", "ρολ", "ρολ"};
 
-  private static final String[] stopwords = { "απο", "δυο", "ελα", "αμα",
+  private static final String[] protectedWords = { "απο", "δυο", "ελα", "αμα",
     "ειτε", "εγω", "δεν", "δηλαδη" };
 
   private char[] token;
@@ -56,23 +56,26 @@ public class SkroutzGreekStemmerTest {
     Field field = stemmer.getClass().getDeclaredField("stepZeroExceptions");
     field.setAccessible(true);
 
-    Map<String, char[]> stepZeroExceptions = (Map) field.get(stemmer);
-
-   for (Map.Entry<String, char[]> entry : stepZeroExceptions.entrySet()) {
-     Assert.assertTrue(entry.getKey().length() >= entry.getValue().length,
-             "Make sure that the stem is shorter/equal than the original.");
-   }
+    CharArrayMap stepZeroExceptions = (CharArrayMap) field.get(stemmer);
+    CharArrayMap.EntryIterator it = stepZeroExceptions.entrySet().iterator();
+    while(it.hasNext()) {
+        char[] key = it.nextKey();
+        // currentValue returns the value associated with the last key returned
+        char[] value = (char[]) it.currentValue();
+        Assert.assertTrue(key.length >= value.length,
+                "Make sure that the stem is shorter/equal than the original.");
+    }
   }
 
   @Test
-  public void testSkroutzGreekStemmerStopwords() {
-    for(String stopword : stopwords) {
-      token = stopword.toCharArray();
-      tokenLength = stopword.length();
+  public void testSkroutzGreekStemmerProtectedwords() {
+    for(String protectedWord : protectedWords) {
+      token = protectedWord.toCharArray();
+      tokenLength = protectedWord.length();
       stemLength = stemmer.stem(token, tokenLength);
       stem = new String(token, 0, stemLength);
 
-      Assert.assertEquals(stopword, stem);
+      Assert.assertEquals(protectedWord, stem);
     }
   }
 }
