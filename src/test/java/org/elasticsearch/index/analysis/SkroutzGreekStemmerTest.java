@@ -31,7 +31,7 @@ public class SkroutzGreekStemmerTest {
       "μονοφω", "μονοφω", "ρολ", "ρολ"};
 
   private static final String[] protectedWords = { "απο", "δυο", "ελα", "αμα",
-    "ειτε", "εγω", "δεν", "δηλαδη" };
+    "ειτε", "εγω", "δεν", "δηλαδη", "κανο" };
 
   private char[] token;
   private String stem;
