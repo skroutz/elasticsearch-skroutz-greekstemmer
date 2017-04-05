@@ -5,7 +5,6 @@ import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
-import org.apache.lucene.analysis.util.CharArraySet;
 
 /**
  * A {@link TokenFilter} that applies {@link SkroutzGreekStemmer} to stem Greek
@@ -24,11 +23,9 @@ public class SkroutzGreekStemTokenFilter extends TokenFilter {
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final KeywordAttribute keywordAttr = addAttribute(KeywordAttribute.class);
 
-	public SkroutzGreekStemTokenFilter(TokenStream input,
-	    CharArraySet stopwords)
-	{
+	public SkroutzGreekStemTokenFilter(TokenStream input) {
 		super(input);
-    this.stemmer = new SkroutzGreekStemmer(stopwords);
+		this.stemmer = new SkroutzGreekStemmer();
 	}
 
 	@Override
