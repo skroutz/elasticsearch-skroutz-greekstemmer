@@ -1,6 +1,6 @@
 package org.elasticsearch.index.analysis;
 
-import org.apache.lucene.analysis.util.CharArrayMap;
+import org.apache.lucene.analysis.CharArrayMap;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
