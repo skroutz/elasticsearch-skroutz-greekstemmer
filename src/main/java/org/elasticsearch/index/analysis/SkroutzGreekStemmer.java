@@ -8,15 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
-import org.apache.lucene.analysis.util.CharArrayMap;
-import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.analysis.CharArrayMap;
+import org.apache.lucene.analysis.CharArraySet;
 
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.logging.ESLogger;
 import org.yaml.snakeyaml.Yaml;
-
-import org.apache.lucene.analysis.util.WordlistLoader;
-import org.apache.lucene.util.IOUtils;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
