@@ -45,21 +45,14 @@ In order to install versions prior to 0.0.12, simply run:
 
     bin/plugin -install skroutz/elasticsearch-skroutz-greekstemmer/0.0.1
 
-Versions:
+Versions
+---------
 
-SkroutzGreekStemmer Plugin | ElasticSearch
----------------------------|------------------
-0.0.12                     | 1.5.x
-0.0.10                     | 1.5.x
-0.0.9                      | 1.5.x
-0.0.8                      | 1.5.x
-0.0.7                      | 1.5.x
-0.0.6                      | 1.5.x
-0.0.5                      | 0.90.3
-0.0.4                      | 0.90.3
-0.0.3                      | 0.90.2
-0.0.2                      | 0.90.0
-0.0.1                      | 0.19.4
+SkroutzGreekStemmer Plugin | ElasticSearch | Branch
+---------------------------|---------------|--------|
+5.4.0.1                    | 5.4.0         | 5.4.0  |
+2.4.4.1                    | 2.4.4         | 2.4.4  | 
+0.0.12 (<=)                | 1.5.0         | 1.5.0  |
 
 Example usage
 -------------
