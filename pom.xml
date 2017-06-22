@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gr.skroutz</groupId>
 	<artifactId>elasticsearch-skroutz-greekstemmer</artifactId>
-	<version>5.4.2.1-SNAPSHOT</version>
+	<version>5.4.2.1</version>
 	<description>Greek stemmer for ElasticSearch</description>
 	<inceptionYear>2012</inceptionYear>
 
