@@ -264,7 +264,8 @@ public class SkroutzGreekStemmer {
           endsWith(s, len, "χν") ||
           endsWith(s, len, "σπ") ||
           endsWith(s, len, "τραγ") ||
-          endsWith(s, len, "φε"))
+          endsWith(s, len, "φε") ||
+          endsWith(s, len, "ρμ"))
         len += 3; // add back -ουδ
     }
     return len;
