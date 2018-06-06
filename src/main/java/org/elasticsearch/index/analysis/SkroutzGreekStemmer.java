@@ -346,7 +346,12 @@ public class SkroutzGreekStemmer {
     boolean removed = false;
     if (len > 2 && (endsWith(s, len, "ιο") ||
                     endsWith(s, len, "ια"))) {
-      len -= 2;
+      if (String.valueOf(s).startsWith("τετραδ") ||
+          String.valueOf(s).startsWith("πανι")) {
+       len -= 1;
+      } else {
+        len -= 2;
+      }
       removed = true;
     } else if (len > 3 && (endsWith(s, len, "ιασ") ||
                            endsWith(s, len, "ιεσ") ||
@@ -355,7 +360,13 @@ public class SkroutzGreekStemmer {
                            endsWith(s, len, "ιοι") ||
                            endsWith(s, len, "ιον") ||
                            endsWith(s, len, "ιων"))) {
-      len -= 3;
+      if (String.valueOf(s).startsWith("τετραδ") ||
+          String.valueOf(s).startsWith("πανι")) {
+        return len - 2;
+      }
+      else {
+        len -= 3;
+      }
       removed = true;
     } else if (len > 4 && (endsWith(s, len, "ιουσ"))) {
       len -= 4;
@@ -946,9 +957,13 @@ public class SkroutzGreekStemmer {
         endsWith(s, len, "ησω") ||
         endsWith(s, len, "ουν") ||
         endsWith(s, len, "οισ") ||
-        endsWith(s, len, "ουσ")))
-      return len - 3;
-
+        endsWith(s, len, "ουσ"))) {
+      if(String.valueOf(s).startsWith("σπορ")) {
+        return len - 2;
+      } else {
+        return len - 3;
+      }
+    }
     if (len > 2 && (endsWith(s, len, "αν") ||
         endsWith(s, len, "ασ") ||
         endsWith(s, len, "αω") ||
@@ -960,9 +975,14 @@ public class SkroutzGreekStemmer {
         endsWith(s, len, "ου") ||
         endsWith(s, len, "υα") ||
         endsWith(s, len, "υσ") ||
-        endsWith(s, len, "ων")))
-      return len - 2;
-
+        endsWith(s, len, "ων"))) {
+      if(String.valueOf(s).startsWith("σπορ")) {
+        s[len - 2] = 'ο';
+        return len - 1;
+      } else {
+        return len - 2;
+      }
+    }
     if (len > 1 && endsWithVowel(s, len))
       return len - 1;
 
