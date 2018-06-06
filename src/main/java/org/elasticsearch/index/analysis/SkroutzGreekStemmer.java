@@ -1086,8 +1086,12 @@ public class SkroutzGreekStemmer {
     CharArrayMap<char[]> stemException = new CharArrayMap(1, true);
 
     for (Map.Entry<String, String> entry : composite.get(exName).entrySet()){
-        stemException.put(entry.getKey().toLowerCase().toCharArray(),
-              entry.getValue().toLowerCase().toCharArray());
+        char[] exception = entry.getKey().toLowerCase().toCharArray();
+        char[] exceptionRule = entry.getValue().toLowerCase().toCharArray();
+        if(exception[exception.length - 1] == 'ς') {
+          exception[exception.length - 1] = 'σ';
+        }
+        stemException.put(exception, exceptionRule);
     }
     return stemException;
   }
