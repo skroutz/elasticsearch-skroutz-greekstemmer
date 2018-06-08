@@ -1,0 +1,7 @@
+FROM maven:3-jdk-8
+
+ADD . /elasticsearch-skroutz-greekstemmer
+
+WORKDIR /elasticsearch-skroutz-greekstemmer
+
+ENTRYPOINT ["mvn", "install"]
