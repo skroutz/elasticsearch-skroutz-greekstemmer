@@ -965,6 +965,12 @@ public class SkroutzGreekStemmer {
         return len - 3;
       }
     }
+    if(String.valueOf(s).equals("χαρτησ") ||
+            String.valueOf(s).equals("χαρτων") ||
+            String.valueOf(s).equals("χαρτεσ")) {
+      s[len - 2] = 'η';
+      return len - 1;
+    }
     if (len > 2 && (endsWith(s, len, "αν") ||
         endsWith(s, len, "ασ") ||
         endsWith(s, len, "αω") ||
@@ -980,10 +986,14 @@ public class SkroutzGreekStemmer {
       if(String.valueOf(s).startsWith("σπορ")) {
         s[len - 2] = 'ο';
         return len - 1;
+      } else if(String.valueOf(s).startsWith("ντουλαπ")) {
+        s[len - 2] = 'α';
+        return len - 1;
       } else {
         return len - 2;
       }
     }
+
     if (len > 1 && endsWithVowel(s, len))
       return len - 1;
 
