@@ -1,19 +1,12 @@
 package org.elasticsearch.index.analysis;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.util.Map;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
-import org.apache.lucene.analysis.CharArrayMap;
 import org.apache.lucene.analysis.CharArraySet;
 
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.common.logging.ESLoggerFactory;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -62,30 +55,14 @@ import org.yaml.snakeyaml.Yaml;
  * about these suffixes are added.
  */
 public class SkroutzGreekStemmer {
-  private CharArraySet protectedWords = CharArraySet.EMPTY_SET;
-  private CharArrayMap<char[]> stepZeroExceptions = CharArrayMap.emptyMap();
-
   protected final Logger logger = ESLoggerFactory.getLogger
           (SkroutzGreekStemmer.class.getName());
 
-  public SkroutzGreekStemmer() {
-    try {
-      this.protectedWords = loadProtected("protected_words");
-      this.stepZeroExceptions = loadExceptions("step_0_exceptions");
-    } catch(IOException ex) {
-      logger.warn("Failed to load exceptions from yaml file");
-    }
-  }
+  public SkroutzGreekStemmer() { }
 
   public int stem(char s[], int len) {
-    // Too short or a protected word
-    if ((len < 3) || (protectedWords.contains(s, 0, len)))
-      return len;
-
-    //handle step 0 and step 1 exceptions
-    char[] exceptional = stepZeroExceptions.get(s, 0, len);
-
-    if(exceptional != null) return handleException(s, exceptional);
+    // Too short
+    if (len < 3) return len;
 
     final int origLen = len;
     // "short rules": if it hits one of these, it skips the "long list"
@@ -117,21 +94,6 @@ public class SkroutzGreekStemmer {
       len = rule22(s, len);
 
     return rule23(s, len);
-  }
-
-  /**
-   * Re-writes the char array based on an exception.
-   * Used in case a stem is not a substring of the original string.
-   * @param s the terms char array
-   * @param stemException the exceptions char array (must be smaller in length)
-   * @return 
-   */
-  private int handleException(char[] s, char[] stemException) {
-    int len = stemException.length;
-
-    System.arraycopy(s, 0, stemException,0, len);
-
-    return len;
   }
 
   private int rule0(char s[], int len) {
@@ -1079,49 +1041,5 @@ public class SkroutzGreekStemmer {
       default:
         return false;
     }
-  }
-
-  /**
-   * Helper function loading an exception Map by its name from the config file.
-   * @param exName The exceptions name
-   * @return a CharArrayMap which maps terms to their exceptions
-   * @throws IOException
-   */
-  private CharArrayMap<char[]> loadExceptions(String exName)
-          throws IOException {
-    InputStream in = SkroutzGreekStemmer.class.getClassLoader()
-            .getResourceAsStream("stemmer.yml");
-    Yaml reader = new Yaml();
-
-    Map<String, Map<String, String>> composite = (Map) reader.load(in);
-    CharArrayMap<char[]> stemException = new CharArrayMap(1, true);
-
-    for (Map.Entry<String, String> entry : composite.get(exName).entrySet()){
-        char[] exception = entry.getKey().toLowerCase().toCharArray();
-        char[] exceptionRule = entry.getValue().toLowerCase().toCharArray();
-        if(exception[exception.length - 1] == 'ς') {
-          exception[exception.length - 1] = 'σ';
-        }
-        stemException.put(exception, exceptionRule);
-    }
-    return stemException;
-  }
-
-  /**
-   * TODO Consider if it's overall better to sacrifice modularity for
-   * efficiency: merge this with loadExceptions
-   * Helper function loading a list of protected words by its name from
-   * the config file.
-   * @param prName The protected words file name
-   * @return a CharArraySet of "term" -> ['s','t','e','m','m','e','d']
-   * @throws IOException
-   */
-  private CharArraySet loadProtected(String prName)
-          throws IOException {
-    InputStream in = SkroutzGreekStemmer.class.getClassLoader()
-            .getResourceAsStream("stemmer.yml");
-    Yaml reader = new Yaml();
-    Map<String, List<char[]>> composite = (Map) reader.load(in);
-    return new CharArraySet(composite.get(prName), true);
   }
 }

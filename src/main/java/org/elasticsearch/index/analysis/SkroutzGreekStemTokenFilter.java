@@ -19,13 +19,12 @@ import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
  * Greek stemmer.
  */
 public class SkroutzGreekStemTokenFilter extends TokenFilter {
-  private final SkroutzGreekStemmer stemmer;
+    private final SkroutzGreekStemmer stemmer = new SkroutzGreekStemmer();
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final KeywordAttribute keywordAttr = addAttribute(KeywordAttribute.class);
 
 	public SkroutzGreekStemTokenFilter(TokenStream input) {
 		super(input);
-		this.stemmer = new SkroutzGreekStemmer();
 	}
 
 	@Override
