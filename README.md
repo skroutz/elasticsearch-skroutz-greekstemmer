@@ -36,6 +36,18 @@ Word                 | GreekStemmer   | SkroutzGreekStemmer
 αμινοξυ (singular)   | αμινοξ         | αμινοξ
 αμινοξεα (plural)    | αμινοξε        | αμινοξ
 
+Stemming exceptions
+-------------------
+
+The stemmer can be combined with the
+[keyword-marker](https://www.elastic.co/guide/en/elasticsearch/reference/5.4/analysis-keyword-marker-tokenfilter.html)
+and
+[stemmer-override](https://www.elastic.co/guide/en/elasticsearch/reference/5.4/analysis-stemmer-override-tokenfilter.html)
+Elasticsearch filters for stemming exceptions support
+(see also the `greek_exceptions.txt` sample stemmer-override
+configuration file).
+As of version 5.4.2.6, there is no builtin support for stemming exceptions.
+
 Installation
 ------------
 
@@ -64,7 +76,7 @@ Versions
 
 SkroutzGreekStemmer Plugin | ElasticSearch | Branch
 ---------------------------|---------------|--------|
-5.4.2.1                    | 5.4.2         | 5.4.2  |
+5.4.2.6                    | 5.4.2         | 5.4.2  |
 5.4.0.1                    | 5.4.0         | 5.4.0  |
 2.4.4.1                    | 2.4.4         | 2.4.4  |
 0.0.12 (<=)                | 1.5.0         | 1.5.0  |
