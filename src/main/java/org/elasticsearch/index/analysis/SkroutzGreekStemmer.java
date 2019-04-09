@@ -388,6 +388,8 @@ public class SkroutzGreekStemmer {
           exc6.contains(s, 0, len) ||
           endsWith(s, len, "φοιν"))
         len += 2; // add back -ικ
+      else if (String.valueOf(s).startsWith("πασχαλιατ"))
+        len -= 4;
     }
     return len;
   }
@@ -951,13 +953,22 @@ public class SkroutzGreekStemmer {
       } else if(String.valueOf(s).startsWith("ντουλαπ")) {
         s[len - 2] = 'α';
         return len - 1;
+      } else if (String.valueOf(s).startsWith("πασχαλιν")) {
+        return len - 5;
       } else {
         return len - 2;
       }
     }
 
-    if (len > 1 && endsWithVowel(s, len))
-      return len - 1;
+    if (String.valueOf(s).equals("πασχα"))
+      return len;
+
+    if (len > 1 && endsWithVowel(s, len)) {
+      if (String.valueOf(s).startsWith("πασχαλιν"))
+        return len - 4;
+      else
+        return len - 1;
+    }
 
     return len;
   }
