@@ -57,7 +57,11 @@ To list all plugins in current installation:
 
 In order to install the latest version of the plugin, simply run:
 
-    sudo bin/elasticsearch-plugin install gr.skroutz:elasticsearch-skroutz-greekstemmer:5.4.2.1
+    sudo bin/elasticsearch-plugin install gr.skroutz:elasticsearch-skroutz-greekstemmer:7.7.0.1
+
+To install version 5.4.2.6 run:
+
+    sudo bin/elasticsearch-plugin install gr.skroutz:elasticsearch-skroutz-greekstemmer:5.4.2.6
 
 In order to install version 2.4.4 of the plugin, simply run:
 
@@ -67,7 +71,7 @@ In order to install versions prior to 0.0.12, simply run:
 
     sudo bin/plugin -install skroutz/elasticsearch-skroutz-greekstemmer/0.0.1
 
-To remove a plugin (5.x.x):
+To remove a plugin (5.x.x/7.x.x):
 
     sudo bin/elasticsearch-plugin remove <plugin_name>
 
@@ -76,6 +80,7 @@ Versions
 
 SkroutzGreekStemmer Plugin | ElasticSearch | Branch
 ---------------------------|---------------|--------|
+7.7.0.1                    | 7.7.0         | 7.7.0  |
 5.4.2.6                    | 5.4.2         | 5.4.2  |
 5.4.0.1                    | 5.4.0         | 5.4.0  |
 2.4.4.1                    | 2.4.4         | 2.4.4  |
@@ -85,7 +90,7 @@ Example usage
 -------------
 
     # Create index
-    $ curl -XPUT 'http://localhost:9200/test_stemmer' -d '{
+    $ curl -XPUT 'http://localhost:9200/test_stemmer' -H 'Content-Type: application/json' -d '{
       "settings":{
         "analysis":{
           "analyzer":{
@@ -110,7 +115,7 @@ Example usage
     {"acknowledged":true}
 
     # Test analyzer
-    $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?analyzer=stem_analyzer&pretty=true' -d 'κουρευτικές μηχανές'
+    $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?pretty' -H 'Content-Type: application/json' -d '{"analyzer": "stem_analyzer", "text": "κουρευτικές μηχανές"}'
     {
       "tokens" : [ {
         "token" : "κουρευτ",
@@ -127,7 +132,7 @@ Example usage
       } ]
     }
 
-    $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?analyzer=stem_analyzer&pretty=true' -d 'κουρευτική μηχανή'
+    $ curl -XGET 'http://localhost:9200/test_stemmer/_analyze?pretty' -H 'Content-Type: application/json' -d '{"analyzer": "stem_analyzer", "text": "κουρευτική μηχανή"}'
     {
       "tokens" : [ {
         "token" : "κουρευτ",

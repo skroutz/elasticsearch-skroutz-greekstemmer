@@ -6,7 +6,7 @@ import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
 import org.apache.lucene.analysis.CharArraySet;
 
 import org.apache.logging.log4j.Logger;
-import org.elasticsearch.common.logging.ESLoggerFactory;
+import org.elasticsearch.common.logging.Loggers;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -35,6 +35,7 @@ import org.elasticsearch.common.logging.ESLoggerFactory;
  *
  * This stemmer is based on the stemmer of the @lucene.experimental with some
  * additions.
+ *
  * <p>
  * According to: <i>Development of a Stemmer for the Greek Language.</i>, the
  * original stemmer removed 158 suffixes. Eight suffixes were not handled at
@@ -55,8 +56,8 @@ import org.elasticsearch.common.logging.ESLoggerFactory;
  * about these suffixes are added.
  */
 public class SkroutzGreekStemmer {
-  protected final Logger logger = ESLoggerFactory.getLogger
-          (SkroutzGreekStemmer.class.getName());
+  protected final Logger logger =
+          Loggers.getLogger(SkroutzGreekStemmer.class, SkroutzGreekStemmer.class.getSimpleName());
 
   public SkroutzGreekStemmer() { }
 
