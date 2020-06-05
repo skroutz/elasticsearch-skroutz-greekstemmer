@@ -35,6 +35,26 @@
 				<role>developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>enderian</id>
+			<name>Spyridon Pagkalos</name>
+			<email>spyridon.pagkalos@skroutz.gr</email>
+			<organization>Skroutz S.A.</organization>
+			<organizationUrl>http://www.skroutz.gr</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ptheof</id>
+			<name>Panagiotis Theofilopoulos</name>
+			<email>p.theofilopoulos@skroutz.gr</email>
+			<organization>Skroutz S.A.</organization>
+			<organizationUrl>http://www.skroutz.gr</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<scm>
