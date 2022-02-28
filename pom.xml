@@ -48,7 +48,7 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@github.com:skoutz/elasticsearch-skroutz-greekstemmer.git</connection>
+		<connection>scm:git:git@github.com:skroutz/elasticsearch-skroutz-greekstemmer.git</connection>
 		<developerConnection>scm:git:git@github.com:skroutz/elasticsearch-skroutz-greekstemmer.git
         </developerConnection>
 		<url>http://github.com/skroutz/elasticsearch-skroutz-greekstemmer</url>
