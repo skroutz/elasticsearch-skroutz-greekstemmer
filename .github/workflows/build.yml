@@ -2,6 +2,8 @@ name: Build Plugin
 
 on:
   push:
+    tags-ignore:
+      - '**'
   pull_request:
   workflow_dispatch:  # Allows manual triggering
 
