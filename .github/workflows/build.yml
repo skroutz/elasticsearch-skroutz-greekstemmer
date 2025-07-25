@@ -1,0 +1,53 @@
+name: Build Plugin
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build plugin using Docker
+      run: ./build-docker.sh
+
+    - name: List build artifacts
+      run: |
+        echo "Build artifacts:"
+        ls -la ./docker-build-target/
+
+    - name: Get plugin version from artifacts
+      id: get_version
+      run: |
+        # Find the zip file and extract version from filename
+        ZIP_FILE=$(ls ./docker-build-target/*.zip | head -n 1)
+        if [ -n "$ZIP_FILE" ]; then
+          FILENAME=$(basename "$ZIP_FILE")
+          echo "zip_filename=$FILENAME" >> $GITHUB_OUTPUT
+          echo "Found zip file: $FILENAME"
+        else
+          echo "No zip file found in build artifacts"
+          exit 1
+        fi
+
+    - name: Upload plugin artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: elasticsearch-skroutz-greekstemmer-plugin
+        path: ./docker-build-target/*.zip
+        retention-days: 30
+
+    - name: Upload artifact with version in name
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.get_version.outputs.zip_filename }}
+        path: ./docker-build-target/*.zip
+        retention-days: 30
