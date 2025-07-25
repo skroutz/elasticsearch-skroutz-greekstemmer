@@ -5,9 +5,6 @@ import java.util.Arrays;
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
 import org.apache.lucene.analysis.CharArraySet;
 
-import org.apache.logging.log4j.Logger;
-import org.elasticsearch.common.logging.Loggers;
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -56,8 +53,6 @@ import org.elasticsearch.common.logging.Loggers;
  * about these suffixes are added.
  */
 public class SkroutzGreekStemmer {
-  protected final Logger logger =
-          Loggers.getLogger(SkroutzGreekStemmer.class, SkroutzGreekStemmer.class.getSimpleName());
 
   public SkroutzGreekStemmer() { }
 
