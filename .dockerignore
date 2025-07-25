@@ -1,0 +1,19 @@
+# Docker ignore file for Elasticsearch plugin build
+target/
+.git/
+.gitignore
+*.md
+.mvn/
+mvnw
+mvnw.cmd
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+bin/
+*.log
