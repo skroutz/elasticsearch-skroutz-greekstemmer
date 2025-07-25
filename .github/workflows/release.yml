@@ -1,0 +1,75 @@
+on:
+  push:
+    tags:
+    - 'v*'
+
+name: Upload Release Asset
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build project
+        run: |
+          ./build-docker.sh
+
+      - name: Get plugin artifact info
+        id: get_artifact
+        run: |
+          # Find the zip file and extract info
+          ZIP_FILE=$(ls ./docker-build-target/*.zip | head -n 1)
+          if [ -n "$ZIP_FILE" ]; then
+            FILENAME=$(basename "$ZIP_FILE")
+            echo "zip_path=$ZIP_FILE" >> $GITHUB_OUTPUT
+            echo "zip_filename=$FILENAME" >> $GITHUB_OUTPUT
+            echo "Found zip file: $FILENAME at $ZIP_FILE"
+          else
+            echo "No zip file found in build artifacts"
+            exit 1
+          fi
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+          body: |
+            # Elasticsearch Skroutz Greek Stemmer Plugin Release
+
+            ## Installation
+
+            1. Download the plugin zip file from the assets below
+            2. Install using Elasticsearch plugin manager:
+               ```bash
+               bin/elasticsearch-plugin install file:///path/to/plugin.zip
+               ```
+
+            ## What's Changed
+
+            This release includes the Elasticsearch Skroutz Greek Stemmer plugin.
+
+            For detailed changes, please see the commit history between releases.
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.get_artifact.outputs.zip_path }}
+          asset_name: ${{ steps.get_artifact.outputs.zip_filename }}
+          asset_content_type: application/zip
