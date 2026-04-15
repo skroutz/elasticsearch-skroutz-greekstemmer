@@ -9,7 +9,7 @@ public class SkroutzGreekStemmerTokenFilterFactory extends AbstractTokenFilterFa
   public SkroutzGreekStemmerTokenFilterFactory(
     IndexSettings indexSettings, Environment environment, String name, Settings settings
   ) {
-    super(name, settings);
+    super(name);
   };
 
 
