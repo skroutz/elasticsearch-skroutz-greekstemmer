@@ -1,0 +1,60 @@
+name: Java CD with Maven
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Remove SNAPSHOT version for Release
+      run: mvn versions:set -DremoveSnapshot -B
+
+    - name: Build with Maven
+      run: mvn clean package
+
+    - name: Export package release ZIP
+      id: post_build
+      run: |
+        ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+        VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+        echo "zip_path=target/releases/${ARTIFACT_ID}-${VERSION}.zip" >> $GITHUB_OUTPUT
+        echo "zip_filename=${ARTIFACT_ID}-${VERSION}.zip" >> $GITHUB_OUTPUT
+
+    - name: Create Release and Upload Assets
+      uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+      with:
+        draft: false
+        prerelease: false
+        body: |
+          # Elasticsearch Skroutz Greekstemmer Plugin Release
+
+          ## Installation
+
+          1. Download the plugin zip file from the assets below
+          2. Install using Elasticsearch plugin manager:
+              ```bash
+              bin/elasticsearch-plugin install file:///path/to/${{ steps.post_build.outputs.zip_filename }}
+              ```
+
+          ## What's Changed
+
+          This release includes the Elasticsearch Skroutz Greekstemmer plugin.
+
+          For detailed changes, please see the commit history between releases.
+        files: |
+          ${{ steps.post_build.outputs.zip_path }}
